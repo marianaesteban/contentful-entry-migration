@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "contentful-management": "^10.19.0"
+  }
+}
