@@ -3,7 +3,7 @@ Script to migrate a single entry and it's references from a Contentful env into 
 
 1. Clone repo and install with `npm i`
 
-2. Add the following to the main.js script:
+2. Add the following to the `main.js` script:
 - Contentful Access Token
 - Contentful Space ID
 - Source Environment ID (the Contentful environment where the original entries you want to clone is)
@@ -12,4 +12,10 @@ Script to migrate a single entry and it's references from a Contentful env into 
 
 3. Run script with `node main.js`
 
-NOTE: If you want to test the output before running the full script you can comment the `Create entries` function (at the end of `run()`) and console log the response with `console.log(JSON.stringify(response)` and running `node main.js > result.txt` to get the output on a text file
+### TESTING BEFORE RUNNING SCRIPT 
+If you want to test the output before running the full script:
+1. Comment the `Create entries` function (at the end of `run()`)
+
+2. Log the response adding `console.log(JSON.stringify(response))` at the end of `run()` 
+
+3. Run script with `node main.js > result.txt` to get the output on a text file
