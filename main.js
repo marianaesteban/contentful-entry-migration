@@ -1,5 +1,6 @@
 const contentful = require("contentful-management");
 
+// https://www.contentful.com/developers/docs/references/authentication/#getting-a-personal-access-token
 const client = contentful.createClient({
   accessToken: '',
 });
@@ -26,25 +27,35 @@ const delayCreateEntry = (environment, item, index) => {
 }, index * 1000)
 }
 
+const deleteUnsupportedFields = (item, fieldIds = []) => {
+  fieldIds.forEach(fieldId => {
+    delete item.fields[fieldId]
+  })
+}
+
 async function run() {
 
   let response = []
 
-//get entry references
+// Get entry references
   await client.getSpace(spaceID)
   .then((space) => space.getEnvironment(sourceEnv))
   .then((environment) => environment.getEntryReferences(targetEntry, { include: 10 }))
-  .then((entry) =>  entry.includes.Entry.forEach((item) =>{
-    delete item.fields.aplicationName
-    delete item.fields.seoBlockTitle
-    delete item.fields.schema
-    response.push(getData(item))}))
+  .then((entry) =>  entry.includes.Entry.forEach((item) => {
+    // delete fields that are not in the target environment
+    // deleteUnsupportedFields(item, ['fieldID', 'fieldID2'])
+    response.push(getData(item))
+  }))
+  .catch(console.error)
 
-// get entry
+// Get entry
   await client.getSpace(spaceID)
   .then((space) => space.getEnvironment(sourceEnv))
   .then((environment) => environment.getEntry(targetEntry))
   .then((entry) => response.push(getData(entry)))
+  .catch(console.error)
+
+// console.log(JSON.stringify(response))
 
 // Create entries
   client.getSpace(spaceID)
